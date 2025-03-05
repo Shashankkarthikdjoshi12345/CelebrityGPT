@@ -6,12 +6,15 @@ from langchain.chains import LLMChain, SequentialChain
 from langchain.memory import ConversationBufferMemory
 import streamlit as st
 
-os.environ["OPENAI_API_KEY"] = OPENAI_KEY
+# Load API Key from Streamlit Secrets
+OPENAI_KEY = st.secrets["OPENAI_API_KEY"]
+
+llm = ChatOpenAI(temperature=0.8, openai_api_key=OPENAI_KEY)
+
 
 st.title('Celebrity GPT')
 input_text = st.text_input('Enter celebrity name')
 
-llm = ChatOpenAI(temperature=0.8)
 
 person_memory = ConversationBufferMemory(input_key="name", memory_key="chat_history")
 dob_memory = ConversationBufferMemory(input_key="person", memory_key="chat_history")
