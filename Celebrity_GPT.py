@@ -5,20 +5,15 @@ from langchain_core.prompts import PromptTemplate
 from langchain.chains import LLMChain, SequentialChain
 from langchain.memory import ConversationBufferMemory
 
-# Load API Key from Streamlit Secrets
 OPENAI_KEY = st.secrets["OPENAI_API_KEY"]
-
 llm = ChatOpenAI(temperature=0.8, openai_api_key=OPENAI_KEY)
-
 st.title("Celebrity GPT")
 input_text = st.text_input("Enter celebrity name")
 
-# Memory Buffers
 person_memory = ConversationBufferMemory(input_key="name", memory_key="chat_history")
 dob_memory = ConversationBufferMemory(input_key="person", memory_key="chat_history")
 event_memory = ConversationBufferMemory(input_key="dob", memory_key="description_history")
 
-# Prompt Templates
 first_prompt = PromptTemplate(
     input_variables=["name"], template="Tell me about {name}."
 )
@@ -41,13 +36,11 @@ sequential_chain = SequentialChain(
     verbose=True,
 )
 
-# 🔄 Full Page Reload Function
 def clear():
     """Fully resets the session and reloads the page"""
-    st.session_state.clear()  # Clears all session state data
-    st.markdown('<meta http-equiv="refresh" content="0">', unsafe_allow_html=True)  # Forces a page refresh
+    st.session_state.clear()
+    st.markdown('<meta http-equiv="refresh" content="0">', unsafe_allow_html=True)
 
-# 💄 Styling Buttons
 st.markdown(
     """
     <style>
@@ -67,7 +60,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# 🔘 Buttons for Refresh & Clear
 col1, col2 = st.columns(2)
 
 with col1:
@@ -78,7 +70,6 @@ with col2:
     if st.button("🗑️ Clear"):
         clear()
 
-# 🤖 Process Input
 if input_text:
     response = sequential_chain.invoke({"name": input_text})
 
