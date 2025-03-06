@@ -60,13 +60,34 @@ def clear():
     event_memory.clear()
     st.rerun()
 
-col1, col2 = st.columns([1, 1])
+# Custom CSS for styling buttons
+st.markdown("""
+    <style>
+        div.stButton > button {
+            width: 150px;
+            height: 40px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        div.stButton {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+# Create two side-by-side buttons with better spacing
+col1, col2 = st.columns(2)
+
 with col1:
     if st.button("🔄 Refresh"):
         refresh()
+
 with col2:
     if st.button("🗑️ Clear"):
         clear()
+
 
 
 
