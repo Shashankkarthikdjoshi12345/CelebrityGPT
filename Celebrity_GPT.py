@@ -20,7 +20,6 @@ person_memory = ConversationBufferMemory(input_key="name", memory_key="chat_hist
 dob_memory = ConversationBufferMemory(input_key="person", memory_key="chat_history")
 event_memory = ConversationBufferMemory(input_key="dob", memory_key="description_history")
 
-# First prompt: Get information about the celebrity
 first_prompt = PromptTemplate(
     input_variables=['name'],
     template="Tell me about {name}."
@@ -28,7 +27,6 @@ first_prompt = PromptTemplate(
 
 chain1 = LLMChain(llm=llm, prompt=first_prompt, verbose=True, output_key='person', memory=person_memory)
 
-# Second prompt: Get birthdate of the person
 second_prompt = PromptTemplate(
     input_variables=['person'],
     template="Provide only the birth date of {person} in 'Month Day, Year' format."
@@ -36,7 +34,6 @@ second_prompt = PromptTemplate(
 
 chain2 = LLMChain(llm=llm, prompt=second_prompt, verbose=True, output_key='dob', memory=dob_memory)
 
-# Third prompt: Get major events on that date
 third_prompt = PromptTemplate(
     input_variables=['dob'],
     template="List 5 major events that happened on {dob}. Explain each event in two lines."
@@ -44,7 +41,6 @@ third_prompt = PromptTemplate(
 
 chain3 = LLMChain(llm=llm, prompt=third_prompt, verbose=True, output_key='events', memory=event_memory)
 
-# Combine chains in sequence
 sequential_chain = SequentialChain(
     chains=[chain1, chain2, chain3],
     input_variables=['name'],
@@ -56,8 +52,21 @@ def refresh():
     """Function to refresh the Streamlit app"""
     st.rerun()
 
-if st.button("🔄 Refresh"):
-    refresh()
+def clear():
+    """Function to clear input and memory buffers"""
+    st.session_state.input_text = ""
+    person_memory.clear()
+    dob_memory.clear()
+    event_memory.clear()
+    st.rerun()
+
+col1, col2 = st.columns(2)
+with col1:
+    if st.button("🔄 Refresh"):
+        refresh()
+with col2:
+    if st.button("🗑️ Clear"):
+        clear()
 
 
 
