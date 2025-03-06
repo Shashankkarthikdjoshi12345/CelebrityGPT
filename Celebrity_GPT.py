@@ -52,6 +52,14 @@ sequential_chain = SequentialChain(
     verbose=True
 )
 
+def refresh():
+    """Function to refresh the Streamlit app"""
+    st.experimental_rerun()
+
+if st.button("🔄 Refresh"):
+    refresh()
+
+
 if input_text:
     response = sequential_chain.invoke({'name': input_text})
     print("Response:", response)
