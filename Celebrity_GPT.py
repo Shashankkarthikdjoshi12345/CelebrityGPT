@@ -54,10 +54,11 @@ sequential_chain = SequentialChain(
 
 def refresh():
     """Function to refresh the Streamlit app"""
-    st.experimental_rerun()
+    st.rerun()
 
 if st.button("🔄 Refresh"):
     refresh()
+
 
 
 if input_text:
