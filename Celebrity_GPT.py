@@ -52,15 +52,23 @@ def refresh():
     """Function to refresh the Streamlit app"""
     st.rerun()
 
-def clear():
-    """Function to clear input and memory buffers"""
-    st.session_state.input_text = ""
-    person_memory.clear()
-    dob_memory.clear()
-    event_memory.clear()
-    st.rerun()
+# def clear():
+#     """Function to clear input and memory buffers"""
+#     st.session_state.input_text = ""
+#     person_memory.clear()
+#     dob_memory.clear()
+#     event_memory.clear()
+#     st.rerun()
 
-# Custom CSS for styling buttons
+def clear():
+    """Function to clear input and memory buffers and refresh the page"""
+    st.session_state["input_text"] = ""  # Clear the input field
+    st.session_state["person_memory"] = None  # Reset memory
+    st.session_state["dob_memory"] = None
+    st.session_state["event_memory"] = None
+    st.rerun()  # Reload the page
+
+
 st.markdown("""
     <style>
         div.stButton > button {
